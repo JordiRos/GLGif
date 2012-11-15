@@ -11,16 +11,20 @@ function loadGif(img, onload) {
 	gif.tex = [];
 	gif.frame = 0;
 	gif.loaded = false;
-	gif.speed = 10;
+	gif.length = 1;
 	gif.time = 0;
 	gif.reset = function(time) {
 		this.time = 0;
 	}
-	gif.setSpeed = function(fps) {
-		this.speed = fps;
+	gif.setFps = function(fps) {
+		this.length = this.tex.length / fps;
+	}
+	gif.setLength = function(length) {
+		this.length = length;
 	}
 	gif.update = function(time) {
-		this.frame = Math.round(((time - this.time) * this.speed) % (this.tex.length-1));
+		var f = (time - this.time) % this.length;
+		this.frame = Math.floor((f / this.length) * this.tex.length);
 	};
 	gif.getTexture = function() {
 		return this.tex[this.frame];
